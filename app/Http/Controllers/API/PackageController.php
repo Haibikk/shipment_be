@@ -1,112 +1,198 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Package;
 use App\Models\TrackingUpdate;
 use Illuminate\Support\Str;
 
+/**
+ * @OA\Tag(
+ *     name="Package",
+ *     description="API untuk mengelola paket"
+ * )
+ */
 class PackageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/packages",
+     *     summary="Mengambil semua paket",
+     *     tags={"Package"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Daftar paket berhasil diambil",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Package"))
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
-        $packages = Package::with(['sender', 'receiver'])->get();
+        $packages = Package::with(['shipment', 'trackingUpdates'])->get();
         return response()->json(['data' => $packages]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/packages",
+     *     summary="Menambahkan paket baru",
+     *     tags={"Package"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"tracking_number", "weight", "status"},
+     *             @OA\Property(property="tracking_number", type="string"),
+     *             @OA\Property(property="weight", type="number"),
+     *             @OA\Property(property="status", type="string", enum={"pending", "in_transit", "delivered"})
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Paket berhasil ditambahkan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="data", ref="#/components/schemas/Package")
+     *         )
+     *     )
+     * )
      */
     public function store(Request $request)
     {
         $request->validate([
-            'sender_id' => 'required|exists:users,id',
-            'receiver_id' => 'required|exists:users,id',
-            'item_name' => 'required|string',
-            'weight' => 'required|numeric|min:0.01',
-            'origin_address' => 'required|string',
-            'destination_address' => 'required|string',
+            'tracking_number' => 'required|unique:packages',
+            'weight' => 'required|numeric',
+            'status' => 'required|string|in:pending,in_transit,delivered',
         ]);
 
         $package = Package::create([
-            'tracking_number' => 'PKG' . Str::upper(Str::random(8)),
-            'sender_id' => $request->sender_id,
-            'receiver_id' => $request->receiver_id,
-            'item_name' => $request->item_name,
-            'description' => $request->description,
+            'tracking_number' => $request->tracking_number,
             'weight' => $request->weight,
-            'length' => $request->length,
-            'width' => $request->width,
-            'height' => $request->height,
-            'value' => $request->value,
-            'origin_address' => $request->origin_address,
-            'destination_address' => $request->destination_address,
-            'status' => 'pending',
-        ]);
-
-        TrackingUpdate::create([
-            'package_id' => $package->id,
-            'status' => 'Paket terdaftar',
-            'description' => 'Paket berhasil didaftarkan dalam sistem',
+            'status' => $request->status,
         ]);
 
         return response()->json(['message' => 'Package created successfully', 'data' => $package], 201);
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Put(
+     *     path="/api/packages/{id}",
+     *     summary="Memperbarui status paket",
+     *     tags={"Package"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"status"},
+     *             @OA\Property(property="status", type="string", enum={"pending", "in_transit", "delivered"})
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Paket berhasil diperbarui",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="data", ref="#/components/schemas/Package")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Paket tidak ditemukan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     )
+     * )
      */
-    public function show(string $id)
-    {
-        $package = Package::with(['sender', 'receiver', 'trackingUpdates', 'shipments'])->findOrFail($id);
-        return response()->json(['data' => $package]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $package = Package::findOrFail($id);
-        
+
         $request->validate([
-            'item_name' => 'sometimes|string',
-            'weight' => 'sometimes|numeric|min:0.01',
-            'status' => 'sometimes|string|in:pending,processing,in_transit,delivered,cancelled',
+            'status' => 'sometimes|string|in:pending,in_transit,delivered',
         ]);
 
-        $package->update($request->all());
-        
-        if ($request->has('status') && $request->status != $package->getOriginal('status')) {
+        if ($request->has('status')) {
+            $package->update(['status' => $request->status]);
+
             TrackingUpdate::create([
                 'package_id' => $package->id,
                 'status' => $request->status,
-                'description' => 'Status paket berubah menjadi ' . $request->status,
+                'description' => 'Status paket diperbarui',
             ]);
-            
-            if ($request->status == 'delivered') {
-                $package->update(['delivered_at' => now()]);
-            }
         }
 
         return response()->json(['message' => 'Package updated successfully', 'data' => $package]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/packages/{id}",
+     *     summary="Menghapus paket",
+     *     tags={"Package"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Paket berhasil dihapus",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Paket tidak ditemukan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     )
+     * )
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $package = Package::findOrFail($id);
         $package->delete();
         return response()->json(['message' => 'Package deleted successfully']);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/packages/{tracking_number}/track",
+     *     summary="Melacak paket berdasarkan nomor pelacakan",
+     *     tags={"Package"},
+     *     @OA\Parameter(
+     *         name="tracking_number",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Paket ditemukan dan data pelacakan berhasil ditampilkan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", ref="#/components/schemas/Package")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Paket tidak ditemukan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     )
+     * )
+     */
     public function track($trackingNumber)
     {
         $package = Package::where('tracking_number', $trackingNumber)
@@ -114,7 +200,7 @@ class PackageController extends Controller
                 $query->orderBy('created_at', 'desc');
             }])
             ->firstOrFail();
-            
+
         return response()->json(['data' => $package]);
     }
 }
