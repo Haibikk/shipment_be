@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Package;
 use App\Models\TrackingUpdate;
@@ -13,6 +14,20 @@ use Illuminate\Support\Str;
  *     description="API untuk mengelola paket"
  * )
  */
+
+ /**
+ * @OA\Schema(
+ *     schema="Package",
+ *     type="object",
+ *     required={"name", "weight", "destination"},
+ *     @OA\Property(property="id", type="integer", description="ID Paket"),
+ *     @OA\Property(property="name", type="string", description="Nama Paket"),
+ *     @OA\Property(property="weight", type="number", format="float", description="Berat Paket"),
+ *     @OA\Property(property="destination", type="string", description="Tujuan Paket"),
+ *     @OA\Property(property="status", type="string", description="Status Pengiriman Paket")
+ * )
+ */
+
 class PackageController extends Controller
 {
     /**

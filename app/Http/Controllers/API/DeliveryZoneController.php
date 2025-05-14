@@ -1,5 +1,8 @@
-namespace App\Http\Controllers;
+<?php
 
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DeliveryZone;
 
@@ -9,6 +12,20 @@ use App\Models\DeliveryZone;
  *     description="API untuk mengelola zona pengiriman"
  * )
  */
+
+ /**
+ * @OA\Schema(
+ *     schema="DeliveryZone",
+ *     type="object",
+ *     required={"name", "code", "base_price"},
+ *     @OA\Property(property="id", type="integer", description="ID Zona Pengiriman"),
+ *     @OA\Property(property="name", type="string", description="Nama Zona Pengiriman"),
+ *     @OA\Property(property="code", type="string", description="Kode Zona Pengiriman"),
+ *     @OA\Property(property="description", type="string", description="Deskripsi Zona Pengiriman"),
+ *     @OA\Property(property="base_price", type="number", format="float", description="Harga Dasar Zona Pengiriman")
+ * )
+ */
+
 class DeliveryZoneController extends Controller
 {
     /**

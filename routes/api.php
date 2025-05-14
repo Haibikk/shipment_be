@@ -1,5 +1,29 @@
 <?php
 // routes/api.php
+
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="Shipment API Documentation",
+ *     description="API documentation for Shipment Management System",
+ *     @OA\Contact(
+ *         email="admin@example.com"
+ *     )
+ * )
+ * 
+ * @OA\Server(
+ *     url=L5_SWAGGER_CONST_HOST,
+ *     description="API Server"
+ * )
+ * 
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+ */
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
