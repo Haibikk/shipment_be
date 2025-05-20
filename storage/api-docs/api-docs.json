@@ -405,6 +405,303 @@
                 }
             }
         },
+        "/api/kategori-barang": {
+            "get": {
+                "tags": [
+                    "KategoriBarang"
+                ],
+                "summary": "Mengambil semua kategori barang",
+                "operationId": "1401dbfd446b7398e08500f8224b9042",
+                "responses": {
+                    "200": {
+                        "description": "Daftar kategori barang berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/KategoriBarang"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "KategoriBarang"
+                ],
+                "summary": "Menambahkan kategori barang baru",
+                "operationId": "31cfc1fdad9cb50ae71a7e9b31e0adac",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama_kategori"
+                                ],
+                                "properties": {
+                                    "nama_kategori": {
+                                        "type": "string"
+                                    },
+                                    "deskripsi": {
+                                        "type": "string"
+                                    },
+                                    "tarif_asuransi": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "penanganan_khusus": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Kategori barang berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/KategoriBarang"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/kategori-barang/{id}": {
+            "get": {
+                "tags": [
+                    "KategoriBarang"
+                ],
+                "summary": "Mengambil detail kategori barang berdasarkan ID",
+                "operationId": "bc25b8f7f520f8133a335e5732c42a41",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail kategori barang berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/KategoriBarang"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Kategori barang tidak ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "KategoriBarang"
+                ],
+                "summary": "Memperbarui kategori barang",
+                "operationId": "16fe1c16fda02ecfb9fd82b0fbd4f77f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nama_kategori": {
+                                        "type": "string"
+                                    },
+                                    "deskripsi": {
+                                        "type": "string"
+                                    },
+                                    "tarif_asuransi": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "penanganan_khusus": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Kategori barang berhasil diperbarui",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/KategoriBarang"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Kategori barang tidak ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "KategoriBarang"
+                ],
+                "summary": "Menghapus kategori barang",
+                "operationId": "8551f8ab483a86bc01ff23e7046816a5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Kategori barang berhasil dihapus",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Kategori barang tidak ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/packages": {
             "get": {
                 "tags": [
@@ -941,6 +1238,45 @@
                 },
                 "type": "object"
             },
+            "KategoriBarang": {
+                "required": [
+                    "nama_kategori"
+                ],
+                "properties": {
+                    "id_kategori": {
+                        "description": "ID Kategori Barang",
+                        "type": "integer"
+                    },
+                    "nama_kategori": {
+                        "description": "Nama Kategori Barang",
+                        "type": "string"
+                    },
+                    "deskripsi": {
+                        "description": "Deskripsi Kategori Barang",
+                        "type": "string"
+                    },
+                    "tarif_asuransi": {
+                        "description": "Tarif Asuransi untuk Kategori Barang",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "penanganan_khusus": {
+                        "description": "Instruksi Penanganan Khusus",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Waktu Pembuatan",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Waktu Terakhir Diperbarui",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "Package": {
                 "required": [
                     "name",
@@ -1041,6 +1377,10 @@
         {
             "name": "DeliveryZone",
             "description": "DeliveryZone"
+        },
+        {
+            "name": "KategoriBarang",
+            "description": "KategoriBarang"
         },
         {
             "name": "Package",

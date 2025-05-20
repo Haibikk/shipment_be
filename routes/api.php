@@ -33,6 +33,7 @@ use App\Http\Controllers\API\TrackingController;
 use App\Http\Controllers\API\DeliveryZoneController;
 use App\Http\Controllers\API\PriceController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\KategoriBarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Price routes
     Route::apiResource('prices', PriceController::class);
     Route::post('calculate-shipping', [PriceController::class, 'calculateShippingCost']);
+
+    // Kategori Barang routes
+    Route::apiResource('kategori-barang', KategoriBarangController::class);
 });
