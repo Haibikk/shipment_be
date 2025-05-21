@@ -34,6 +34,7 @@ use App\Http\Controllers\API\DeliveryZoneController;
 use App\Http\Controllers\API\PriceController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\KategoriBarangController;
+use App\Http\Controllers\API\BarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,4 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Kategori Barang routes
     Route::apiResource('kategori-barang', KategoriBarangController::class);
+
+    // Barang routes
+    Route::apiResource('barang', BarangController::class);
 });
