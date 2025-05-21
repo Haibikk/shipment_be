@@ -316,16 +316,16 @@
                 }
             }
         },
-        "/api/delivery-zones": {
+        "/api/area-pengiriman": {
             "get": {
                 "tags": [
-                    "DeliveryZone"
+                    "AreaPengiriman"
                 ],
-                "summary": "Mengambil semua zona pengiriman",
-                "operationId": "4c98c3efc5572e07b6c3d90cc61517f2",
+                "summary": "Mengambil semua area pengiriman",
+                "operationId": "9d16adbf26b07ce2d0d0e4b833039044",
                 "responses": {
                     "200": {
-                        "description": "Daftar zona pengiriman berhasil diambil",
+                        "description": "Daftar area pengiriman berhasil diambil",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -333,7 +333,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/DeliveryZone"
+                                                "$ref": "#/components/schemas/AreaPengiriman"
                                             }
                                         }
                                     },
@@ -346,10 +346,10 @@
             },
             "post": {
                 "tags": [
-                    "DeliveryZone"
+                    "AreaPengiriman"
                 ],
-                "summary": "Menambahkan zona pengiriman baru",
-                "operationId": "ff6f4ebe9c3e34b01628c36178c74dba",
+                "summary": "Menambahkan area pengiriman baru",
+                "operationId": "b002e80eabaf0bed9ef3d6cc7c579656",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -382,7 +382,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Zona pengiriman berhasil ditambahkan",
+                        "description": "Area pengiriman berhasil ditambahkan",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -391,7 +391,7 @@
                                             "type": "string"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/DeliveryZone"
+                                            "$ref": "#/components/schemas/AreaPengiriman"
                                         }
                                     },
                                     "type": "object"
@@ -402,13 +402,13 @@
                 }
             }
         },
-        "/api/delivery-zones/{id}": {
+        "/api/area-pengiriman/{id}": {
             "get": {
                 "tags": [
-                    "DeliveryZone"
+                    "AreaPengiriman"
                 ],
-                "summary": "Mengambil detail zona pengiriman berdasarkan ID",
-                "operationId": "722b280e0f0dc5ecf47b8f5e2860c23d",
+                "summary": "Mengambil detail area pengiriman berdasarkan ID",
+                "operationId": "95e9a5ffb94ef72076117ea7fa44e180",
                 "parameters": [
                     {
                         "name": "id",
@@ -421,13 +421,13 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Detail zona pengiriman berhasil diambil",
+                        "description": "Detail area pengiriman berhasil diambil",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/components/schemas/DeliveryZone"
+                                            "$ref": "#/components/schemas/AreaPengiriman"
                                         }
                                     },
                                     "type": "object"
@@ -436,7 +436,7 @@
                         }
                     },
                     "404": {
-                        "description": "Zona pengiriman tidak ditemukan",
+                        "description": "Area pengiriman tidak ditemukan",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -454,10 +454,10 @@
             },
             "put": {
                 "tags": [
-                    "DeliveryZone"
+                    "AreaPengiriman"
                 ],
-                "summary": "Memperbarui informasi zona pengiriman",
-                "operationId": "f7e56ee0bdaa16ad5969e3b68d1ca2b9",
+                "summary": "Memperbarui informasi area pengiriman",
+                "operationId": "e8d6ed34987e0cff3b60b5ef51768c30",
                 "parameters": [
                     {
                         "name": "id",
@@ -495,7 +495,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Zona pengiriman berhasil diperbarui",
+                        "description": "Area pengiriman berhasil diperbarui",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -504,7 +504,7 @@
                                             "type": "string"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/DeliveryZone"
+                                            "$ref": "#/components/schemas/AreaPengiriman"
                                         }
                                     },
                                     "type": "object"
@@ -513,7 +513,7 @@
                         }
                     },
                     "404": {
-                        "description": "Zona pengiriman tidak ditemukan",
+                        "description": "Area pengiriman tidak ditemukan",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -531,10 +531,10 @@
             },
             "delete": {
                 "tags": [
-                    "DeliveryZone"
+                    "AreaPengiriman"
                 ],
-                "summary": "Menghapus zona pengiriman",
-                "operationId": "6b8e0c1cad173e912d85501751442b86",
+                "summary": "Menghapus area pengiriman",
+                "operationId": "92b7d3ce9cad575be0faac383db4d3fd",
                 "parameters": [
                     {
                         "name": "id",
@@ -547,7 +547,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Zona pengiriman berhasil dihapus",
+                        "description": "Area pengiriman berhasil dihapus",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -562,7 +562,7 @@
                         }
                     },
                     "404": {
-                        "description": "Zona pengiriman tidak ditemukan",
+                        "description": "Area pengiriman tidak ditemukan",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -879,9 +879,9 @@
         "/api/packages": {
             "get": {
                 "tags": [
-                    "Package"
+                    "Paket"
                 ],
-                "summary": "Mengambil semua paket",
+                "summary": "Mengambil semua data paket",
                 "operationId": "fa711def65ef2543611b07b2681b876d",
                 "responses": {
                     "200": {
@@ -893,7 +893,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/Package"
+                                                "$ref": "#/components/schemas/Paket"
                                             }
                                         }
                                     },
@@ -906,9 +906,9 @@
             },
             "post": {
                 "tags": [
-                    "Package"
+                    "Paket"
                 ],
-                "summary": "Menambahkan paket baru",
+                "summary": "Menambahkan data paket baru",
                 "operationId": "05b37489e2a6cde1f8d3f6970185ff54",
                 "requestBody": {
                     "required": true,
@@ -952,7 +952,7 @@
                                             "type": "string"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Package"
+                                            "$ref": "#/components/schemas/Paket"
                                         }
                                     },
                                     "type": "object"
@@ -966,9 +966,9 @@
         "/api/packages/{id}": {
             "put": {
                 "tags": [
-                    "Package"
+                    "Paket"
                 ],
-                "summary": "Memperbarui status paket",
+                "summary": "Memperbarui status sebuah paket",
                 "operationId": "f1d050cff3d2ef404dccf96acb17c23c",
                 "parameters": [
                     {
@@ -1014,7 +1014,7 @@
                                             "type": "string"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/Package"
+                                            "$ref": "#/components/schemas/Paket"
                                         }
                                     },
                                     "type": "object"
@@ -1041,9 +1041,9 @@
             },
             "delete": {
                 "tags": [
-                    "Package"
+                    "Paket"
                 ],
-                "summary": "Menghapus paket",
+                "summary": "Menghapus data paket",
                 "operationId": "5d78fac156bf755d68fc3cf8e1c7cd28",
                 "parameters": [
                     {
@@ -1092,7 +1092,7 @@
         "/api/packages/{tracking_number}/track": {
             "get": {
                 "tags": [
-                    "Package"
+                    "Paket"
                 ],
                 "summary": "Melacak paket berdasarkan nomor pelacakan",
                 "operationId": "12cbf01417b48ffe32363e7b5b85df85",
@@ -1114,7 +1114,7 @@
                                 "schema": {
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/components/schemas/Package"
+                                            "$ref": "#/components/schemas/Paket"
                                         }
                                     },
                                     "type": "object"
@@ -1381,7 +1381,7 @@
     },
     "components": {
         "schemas": {
-            "DeliveryZone": {
+            "AreaPengiriman": {
                 "required": [
                     "name",
                     "code",
@@ -1389,23 +1389,23 @@
                 ],
                 "properties": {
                     "id": {
-                        "description": "ID Zona Pengiriman",
+                        "description": "ID Area Pengiriman",
                         "type": "integer"
                     },
                     "name": {
-                        "description": "Nama Zona Pengiriman",
+                        "description": "Nama Area Pengiriman",
                         "type": "string"
                     },
                     "code": {
-                        "description": "Kode Zona Pengiriman",
+                        "description": "Kode Area Pengiriman",
                         "type": "string"
                     },
                     "description": {
-                        "description": "Deskripsi Zona Pengiriman",
+                        "description": "Deskripsi Area Pengiriman",
                         "type": "string"
                     },
                     "base_price": {
-                        "description": "Harga Dasar Zona Pengiriman",
+                        "description": "Harga Dasar Area Pengiriman",
                         "type": "number",
                         "format": "float"
                     }
@@ -1451,7 +1451,7 @@
                 },
                 "type": "object"
             },
-            "Package": {
+            "Paket": {
                 "required": [
                     "name",
                     "weight",
@@ -1553,16 +1553,16 @@
             "description": "Category"
         },
         {
-            "name": "DeliveryZone",
-            "description": "DeliveryZone"
+            "name": "AreaPengiriman",
+            "description": "AreaPengiriman"
         },
         {
             "name": "KategoriBarang",
             "description": "KategoriBarang"
         },
         {
-            "name": "Package",
-            "description": "Package"
+            "name": "Paket",
+            "description": "Paket"
         }
     ]
 }

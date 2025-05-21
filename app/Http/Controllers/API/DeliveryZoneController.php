@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\AreaPengiriman;
+use App\Models\DeliveryZone;
 
 /**
  * @OA\Tag(
@@ -26,7 +26,7 @@ use App\Models\AreaPengiriman;
  * )
  */
 
-class AreaPengirimanController extends Controller
+class DeliveryZoneController extends Controller
 {
     /**
      * @OA\Get(
@@ -44,8 +44,7 @@ class AreaPengirimanController extends Controller
      */
     public function index()
     {
-        $areas = AreaPengiriman::all();
-        return response()->json(['data' => $areas]);
+        return response()->json(DeliveryZone::all());
     }
 
     /**
@@ -75,16 +74,14 @@ class AreaPengirimanController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|max:10|unique:area_pengiriman',
             'description' => 'nullable|string',
             'base_price' => 'required|numeric|min:0',
         ]);
-
-        $area = AreaPengiriman::create($request->all());
-
-        return response()->json(['message' => 'Area pengiriman berhasil dibuat', 'data' => $area], 201);
+        $deliveryZone = DeliveryZone::create($validated);
+        return response()->json($deliveryZone, 201);
     }
 
     /**
@@ -116,8 +113,11 @@ class AreaPengirimanController extends Controller
      */
     public function show($id)
     {
-        $area = AreaPengiriman::findOrFail($id);
-        return response()->json(['data' => $area]);
+        $deliveryZone = DeliveryZone::find($id);
+        if (!$deliveryZone) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+        return response()->json($deliveryZone);
     }
 
     /**
@@ -159,18 +159,18 @@ class AreaPengirimanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $area = AreaPengiriman::findOrFail($id);
-
-        $request->validate([
+        $deliveryZone = DeliveryZone::find($id);
+        if (!$deliveryZone) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+        $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
             'code' => 'sometimes|string|max:10|unique:area_pengiriman,code,' . $id,
             'description' => 'nullable|string',
             'base_price' => 'sometimes|numeric|min:0',
         ]);
-
-        $area->update($request->all());
-
-        return response()->json(['message' => 'Area pengiriman berhasil diperbarui', 'data' => $area]);
+        $deliveryZone->update($validated);
+        return response()->json($deliveryZone);
     }
 
     /**
@@ -202,8 +202,11 @@ class AreaPengirimanController extends Controller
      */
     public function destroy($id)
     {
-        $area = AreaPengiriman::findOrFail($id);
-        $area->delete();
-        return response()->json(['message' => 'Area pengiriman berhasil dihapus']);
+        $deliveryZone = DeliveryZone::find($id);
+        if (!$deliveryZone) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+        $deliveryZone->delete();
+        return response()->json(null, 204);
     }
 }
