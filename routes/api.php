@@ -27,10 +27,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\API\PackageController;
+use App\Http\Controllers\API\PaketController;
 use App\Http\Controllers\API\ShipmentController;
 use App\Http\Controllers\API\TrackingController;
-use App\Http\Controllers\API\DeliveryZoneController;
+use App\Http\Controllers\API\AreaPengirimanController;
 use App\Http\Controllers\API\PriceController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\KategoriBarangController;
@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
 
     // Package routes
-    Route::apiResource('packages', PackageController::class);
+    Route::apiResource('paket', PaketController::class);
 
     // Shipment routes
     Route::apiResource('shipments', ShipmentController::class);
@@ -66,8 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Tracking routes (hanya untuk tambah update)
     Route::post('tracking', [TrackingController::class, 'addUpdate']);
 
-    // Delivery Zone routes
-    Route::apiResource('zones', DeliveryZoneController::class);
+    // Area Pengiriman routes
+    Route::apiResource('area-pengiriman', AreaPengirimanController::class);
 
     // Price routes
     Route::apiResource('prices', PriceController::class);

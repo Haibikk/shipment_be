@@ -10,14 +10,14 @@ use Illuminate\Support\Str;
 
 /**
  * @OA\Tag(
- *     name="Package",
- *     description="API untuk mengelola paket"
+ *     name="Paket",
+ *     description="API untuk mengelola data paket"
  * )
  */
 
- /**
+/**
  * @OA\Schema(
- *     schema="Package",
+ *     schema="Paket",
  *     type="object",
  *     required={"name", "weight", "destination"},
  *     @OA\Property(property="id", type="integer", description="ID Paket"),
@@ -33,13 +33,13 @@ class PackageController extends Controller
     /**
      * @OA\Get(
      *     path="/api/packages",
-     *     summary="Mengambil semua paket",
-     *     tags={"Package"},
+     *     summary="Mengambil semua data paket",
+     *     tags={"Paket"},
      *     @OA\Response(
      *         response=200,
      *         description="Daftar paket berhasil diambil",
      *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Package"))
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Paket"))
      *         )
      *     )
      * )
@@ -53,8 +53,8 @@ class PackageController extends Controller
     /**
      * @OA\Post(
      *     path="/api/packages",
-     *     summary="Menambahkan paket baru",
-     *     tags={"Package"},
+     *     summary="Menambahkan data paket baru",
+     *     tags={"Paket"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -69,7 +69,7 @@ class PackageController extends Controller
      *         description="Paket berhasil ditambahkan",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", ref="#/components/schemas/Package")
+     *             @OA\Property(property="data", ref="#/components/schemas/Paket")
      *         )
      *     )
      * )
@@ -88,14 +88,14 @@ class PackageController extends Controller
             'status' => $request->status,
         ]);
 
-        return response()->json(['message' => 'Package created successfully', 'data' => $package], 201);
+        return response()->json(['message' => 'Paket berhasil dibuat', 'data' => $package], 201);
     }
 
     /**
      * @OA\Put(
      *     path="/api/packages/{id}",
-     *     summary="Memperbarui status paket",
-     *     tags={"Package"},
+     *     summary="Memperbarui status sebuah paket",
+     *     tags={"Paket"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -114,7 +114,7 @@ class PackageController extends Controller
      *         description="Paket berhasil diperbarui",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", ref="#/components/schemas/Package")
+     *             @OA\Property(property="data", ref="#/components/schemas/Paket")
      *         )
      *     ),
      *     @OA\Response(
@@ -144,14 +144,14 @@ class PackageController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Package updated successfully', 'data' => $package]);
+        return response()->json(['message' => 'Paket berhasil diperbarui', 'data' => $package]);
     }
 
     /**
      * @OA\Delete(
      *     path="/api/packages/{id}",
-     *     summary="Menghapus paket",
-     *     tags={"Package"},
+     *     summary="Menghapus data paket",
+     *     tags={"Paket"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -178,14 +178,14 @@ class PackageController extends Controller
     {
         $package = Package::findOrFail($id);
         $package->delete();
-        return response()->json(['message' => 'Package deleted successfully']);
+        return response()->json(['message' => 'Paket berhasil dihapus']);
     }
 
     /**
      * @OA\Get(
      *     path="/api/packages/{tracking_number}/track",
      *     summary="Melacak paket berdasarkan nomor pelacakan",
-     *     tags={"Package"},
+     *     tags={"Paket"},
      *     @OA\Parameter(
      *         name="tracking_number",
      *         in="path",
@@ -196,7 +196,7 @@ class PackageController extends Controller
      *         response=200,
      *         description="Paket ditemukan dan data pelacakan berhasil ditampilkan",
      *         @OA\JsonContent(
-     *             @OA\Property(property="data", ref="#/components/schemas/Package")
+     *             @OA\Property(property="data", ref="#/components/schemas/Paket")
      *         )
      *     ),
      *     @OA\Response(

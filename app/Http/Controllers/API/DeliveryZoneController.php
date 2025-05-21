@@ -4,55 +4,55 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\DeliveryZone;
+use App\Models\AreaPengiriman;
 
 /**
  * @OA\Tag(
- *     name="DeliveryZone",
- *     description="API untuk mengelola zona pengiriman"
+ *     name="AreaPengiriman",
+ *     description="API untuk mengelola area pengiriman"
  * )
  */
 
- /**
+/**
  * @OA\Schema(
- *     schema="DeliveryZone",
+ *     schema="AreaPengiriman",
  *     type="object",
  *     required={"name", "code", "base_price"},
- *     @OA\Property(property="id", type="integer", description="ID Zona Pengiriman"),
- *     @OA\Property(property="name", type="string", description="Nama Zona Pengiriman"),
- *     @OA\Property(property="code", type="string", description="Kode Zona Pengiriman"),
- *     @OA\Property(property="description", type="string", description="Deskripsi Zona Pengiriman"),
- *     @OA\Property(property="base_price", type="number", format="float", description="Harga Dasar Zona Pengiriman")
+ *     @OA\Property(property="id", type="integer", description="ID Area Pengiriman"),
+ *     @OA\Property(property="name", type="string", description="Nama Area Pengiriman"),
+ *     @OA\Property(property="code", type="string", description="Kode Area Pengiriman"),
+ *     @OA\Property(property="description", type="string", description="Deskripsi Area Pengiriman"),
+ *     @OA\Property(property="base_price", type="number", format="float", description="Harga Dasar Area Pengiriman")
  * )
  */
 
-class DeliveryZoneController extends Controller
+class AreaPengirimanController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/delivery-zones",
-     *     summary="Mengambil semua zona pengiriman",
-     *     tags={"DeliveryZone"},
+     *     path="/api/area-pengiriman",
+     *     summary="Mengambil semua area pengiriman",
+     *     tags={"AreaPengiriman"},
      *     @OA\Response(
      *         response=200,
-     *         description="Daftar zona pengiriman berhasil diambil",
+     *         description="Daftar area pengiriman berhasil diambil",
      *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/DeliveryZone"))
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/AreaPengiriman"))
      *         )
      *     )
      * )
      */
     public function index()
     {
-        $zones = DeliveryZone::all();
-        return response()->json(['data' => $zones]);
+        $areas = AreaPengiriman::all();
+        return response()->json(['data' => $areas]);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/delivery-zones",
-     *     summary="Menambahkan zona pengiriman baru",
-     *     tags={"DeliveryZone"},
+     *     path="/api/area-pengiriman",
+     *     summary="Menambahkan area pengiriman baru",
+     *     tags={"AreaPengiriman"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -65,10 +65,10 @@ class DeliveryZoneController extends Controller
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Zona pengiriman berhasil ditambahkan",
+     *         description="Area pengiriman berhasil ditambahkan",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", ref="#/components/schemas/DeliveryZone")
+     *             @OA\Property(property="data", ref="#/components/schemas/AreaPengiriman")
      *         )
      *     )
      * )
@@ -77,21 +77,21 @@ class DeliveryZoneController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:10|unique:delivery_zones',
+            'code' => 'required|string|max:10|unique:area_pengiriman',
             'description' => 'nullable|string',
             'base_price' => 'required|numeric|min:0',
         ]);
 
-        $zone = DeliveryZone::create($request->all());
+        $area = AreaPengiriman::create($request->all());
 
-        return response()->json(['message' => 'Delivery zone created successfully', 'data' => $zone], 201);
+        return response()->json(['message' => 'Area pengiriman berhasil dibuat', 'data' => $area], 201);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/delivery-zones/{id}",
-     *     summary="Mengambil detail zona pengiriman berdasarkan ID",
-     *     tags={"DeliveryZone"},
+     *     path="/api/area-pengiriman/{id}",
+     *     summary="Mengambil detail area pengiriman berdasarkan ID",
+     *     tags={"AreaPengiriman"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -100,14 +100,14 @@ class DeliveryZoneController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Detail zona pengiriman berhasil diambil",
+     *         description="Detail area pengiriman berhasil diambil",
      *         @OA\JsonContent(
-     *             @OA\Property(property="data", ref="#/components/schemas/DeliveryZone")
+     *             @OA\Property(property="data", ref="#/components/schemas/AreaPengiriman")
      *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Zona pengiriman tidak ditemukan",
+     *         description="Area pengiriman tidak ditemukan",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string")
      *         )
@@ -116,15 +116,15 @@ class DeliveryZoneController extends Controller
      */
     public function show($id)
     {
-        $zone = DeliveryZone::findOrFail($id);
-        return response()->json(['data' => $zone]);
+        $area = AreaPengiriman::findOrFail($id);
+        return response()->json(['data' => $area]);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/delivery-zones/{id}",
-     *     summary="Memperbarui informasi zona pengiriman",
-     *     tags={"DeliveryZone"},
+     *     path="/api/area-pengiriman/{id}",
+     *     summary="Memperbarui informasi area pengiriman",
+     *     tags={"AreaPengiriman"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -142,15 +142,15 @@ class DeliveryZoneController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Zona pengiriman berhasil diperbarui",
+     *         description="Area pengiriman berhasil diperbarui",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="data", ref="#/components/schemas/DeliveryZone")
+     *             @OA\Property(property="data", ref="#/components/schemas/AreaPengiriman")
      *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Zona pengiriman tidak ditemukan",
+     *         description="Area pengiriman tidak ditemukan",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string")
      *         )
@@ -159,25 +159,25 @@ class DeliveryZoneController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $zone = DeliveryZone::findOrFail($id);
+        $area = AreaPengiriman::findOrFail($id);
 
         $request->validate([
             'name' => 'sometimes|string|max:255',
-            'code' => 'sometimes|string|max:10|unique:delivery_zones,code,' . $id,
+            'code' => 'sometimes|string|max:10|unique:area_pengiriman,code,' . $id,
             'description' => 'nullable|string',
             'base_price' => 'sometimes|numeric|min:0',
         ]);
 
-        $zone->update($request->all());
+        $area->update($request->all());
 
-        return response()->json(['message' => 'Delivery zone updated successfully', 'data' => $zone]);
+        return response()->json(['message' => 'Area pengiriman berhasil diperbarui', 'data' => $area]);
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/delivery-zones/{id}",
-     *     summary="Menghapus zona pengiriman",
-     *     tags={"DeliveryZone"},
+     *     path="/api/area-pengiriman/{id}",
+     *     summary="Menghapus area pengiriman",
+     *     tags={"AreaPengiriman"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -186,14 +186,14 @@ class DeliveryZoneController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Zona pengiriman berhasil dihapus",
+     *         description="Area pengiriman berhasil dihapus",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string")
      *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Zona pengiriman tidak ditemukan",
+     *         description="Area pengiriman tidak ditemukan",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string")
      *         )
@@ -202,8 +202,8 @@ class DeliveryZoneController extends Controller
      */
     public function destroy($id)
     {
-        $zone = DeliveryZone::findOrFail($id);
-        $zone->delete();
-        return response()->json(['message' => 'Delivery zone deleted successfully']);
+        $area = AreaPengiriman::findOrFail($id);
+        $area->delete();
+        return response()->json(['message' => 'Area pengiriman berhasil dihapus']);
     }
 }
