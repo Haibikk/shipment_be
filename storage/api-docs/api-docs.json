@@ -19,13 +19,13 @@
         }
     ],
     "paths": {
-        "/api/login": {
+        "/login": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Login pengguna",
-                "operationId": "44212a9096e4b09358281e9ec8a0701d",
+                "operationId": "d618a255475240ba3d40cc39692cd924",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -108,14 +108,182 @@
                 }
             }
         },
-        "/api/barang": {
+        "/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register pengguna baru",
+                "operationId": "e66f8a7452e13b03ae4e77dbb42e435c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registrasi berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Registration successful"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "user@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "format": "bearer",
+                                            "example": "your_token_here"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity - Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The name field is required."
+                                                    }
+                                                },
+                                                "email": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email has already been taken."
+                                                    }
+                                                },
+                                                "password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The password must be at least 8 characters."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout pengguna",
+                "operationId": "1e357eb2c93a1bdabebcebfa088332bf",
+                "responses": {
+                    "200": {
+                        "description": "Logout berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logout successful"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Token invalid or missing",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/barang": {
             "get": {
                 "tags": [
                     "Barang"
                 ],
                 "summary": "Get list of barang",
                 "description": "Display a listing of the resource.",
-                "operationId": "f9b86624b1ea03a5758e8eae04bc6621",
+                "operationId": "28dbfd166522e0488753ad64bd0b55cd",
                 "responses": {
                     "200": {
                         "description": "Success"
@@ -128,7 +296,7 @@
                 ],
                 "summary": "Create a new barang",
                 "description": "Store a newly created resource in storage.",
-                "operationId": "babddf8dd1e89ef20f9f701a5d0b130e",
+                "operationId": "2dc96475680f690140c0d9bb5a51aa5c",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -157,7 +325,12 @@
                                         "type": "string"
                                     },
                                     "status": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "active",
+                                            "inactive"
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -168,18 +341,24 @@
                 "responses": {
                     "201": {
                         "description": "Created"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "500": {
+                        "description": "Server Error"
                     }
                 }
             }
         },
-        "/api/barang/{id}": {
+        "/barang/{id}": {
             "get": {
                 "tags": [
                     "Barang"
                 ],
                 "summary": "Get a barang by ID",
                 "description": "Display the specified resource.",
-                "operationId": "57e3d556d5baa0e628ac33da7d19b222",
+                "operationId": "643d8beb7bf164a62ffecdb20d06f35d",
                 "parameters": [
                     {
                         "name": "id",
@@ -205,7 +384,7 @@
                 ],
                 "summary": "Update a barang",
                 "description": "Update the specified resource in storage.",
-                "operationId": "a8412c1cad62703ba5a3e430dc6bc5c1",
+                "operationId": "e25f3a462cd8916bd3d911ef67d015c2",
                 "parameters": [
                     {
                         "name": "id",
@@ -261,7 +440,7 @@
                 ],
                 "summary": "Delete a barang",
                 "description": "Remove the specified resource from storage.",
-                "operationId": "3bb31845049c03c5405f083825d70c1b",
+                "operationId": "e40430bacb2eee82718919d54df4a7f5",
                 "parameters": [
                     {
                         "name": "id",
@@ -316,13 +495,13 @@
                 }
             }
         },
-        "/api/area-pengiriman": {
+        "/area-pengiriman": {
             "get": {
                 "tags": [
                     "AreaPengiriman"
                 ],
                 "summary": "Mengambil semua area pengiriman",
-                "operationId": "9d16adbf26b07ce2d0d0e4b833039044",
+                "operationId": "7df2a64f42ffe5aa11d5b25f81b8b0b4",
                 "responses": {
                     "200": {
                         "description": "Daftar area pengiriman berhasil diambil",
@@ -342,14 +521,19 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
                     "AreaPengiriman"
                 ],
                 "summary": "Menambahkan area pengiriman baru",
-                "operationId": "b002e80eabaf0bed9ef3d6cc7c579656",
+                "operationId": "bd8ffbed5438277f1b68be4ace11c8bf",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -398,17 +582,47 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "schema": "ValidationErrors",
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/area-pengiriman/{id}": {
+        "/area-pengiriman/{id}": {
             "get": {
                 "tags": [
                     "AreaPengiriman"
                 ],
                 "summary": "Mengambil detail area pengiriman berdasarkan ID",
-                "operationId": "95e9a5ffb94ef72076117ea7fa44e180",
+                "operationId": "5b58f0ce321eb04fa5dac715fbb90ff2",
                 "parameters": [
                     {
                         "name": "id",
@@ -450,14 +664,19 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
                     "AreaPengiriman"
                 ],
                 "summary": "Memperbarui informasi area pengiriman",
-                "operationId": "e8d6ed34987e0cff3b60b5ef51768c30",
+                "operationId": "000d0f74061a967f324258097d4eb617",
                 "parameters": [
                     {
                         "name": "id",
@@ -527,14 +746,19 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
                     "AreaPengiriman"
                 ],
                 "summary": "Menghapus area pengiriman",
-                "operationId": "92b7d3ce9cad575be0faac383db4d3fd",
+                "operationId": "683e9be214f6724c5c5cbbd57ddf75ad",
                 "parameters": [
                     {
                         "name": "id",
@@ -576,16 +800,21 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/kategori-barang": {
+        "/kategori-barang": {
             "get": {
                 "tags": [
                     "KategoriBarang"
                 ],
                 "summary": "Mengambil semua kategori barang",
-                "operationId": "1401dbfd446b7398e08500f8224b9042",
+                "operationId": "0f2386692a6a7a5781fb04222d530b0e",
                 "responses": {
                     "200": {
                         "description": "Daftar kategori barang berhasil diambil",
@@ -612,7 +841,7 @@
                     "KategoriBarang"
                 ],
                 "summary": "Menambahkan kategori barang baru",
-                "operationId": "31cfc1fdad9cb50ae71a7e9b31e0adac",
+                "operationId": "9e06ee8f332fa4b36e1eef58ebcb2920",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -681,13 +910,13 @@
                 }
             }
         },
-        "/api/kategori-barang/{id}": {
+        "/kategori-barang/{id}": {
             "get": {
                 "tags": [
                     "KategoriBarang"
                 ],
                 "summary": "Mengambil detail kategori barang berdasarkan ID",
-                "operationId": "bc25b8f7f520f8133a335e5732c42a41",
+                "operationId": "d91ec7373fac8d5eebd0a1fa6183c014",
                 "parameters": [
                     {
                         "name": "id",
@@ -736,7 +965,7 @@
                     "KategoriBarang"
                 ],
                 "summary": "Memperbarui kategori barang",
-                "operationId": "16fe1c16fda02ecfb9fd82b0fbd4f77f",
+                "operationId": "cb03942ec570c265d4c13242593919a1",
                 "parameters": [
                     {
                         "name": "id",
@@ -831,7 +1060,7 @@
                     "KategoriBarang"
                 ],
                 "summary": "Menghapus kategori barang",
-                "operationId": "8551f8ab483a86bc01ff23e7046816a5",
+                "operationId": "05b437f15fa3913e0e879a19597a5650",
                 "parameters": [
                     {
                         "name": "id",
@@ -876,13 +1105,13 @@
                 }
             }
         },
-        "/api/paket": {
+        "/paket": {
             "get": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Mengambil semua data paket",
-                "operationId": "e48b732c8041da02479e124e11e13e31",
+                "operationId": "89c95c6ed2282ba1dbe9680b2415bcba",
                 "responses": {
                     "200": {
                         "description": "Daftar paket berhasil diambil",
@@ -909,7 +1138,7 @@
                     "Paket"
                 ],
                 "summary": "Menambahkan data paket baru",
-                "operationId": "bfc807940de08a8c76307da514d75f5d",
+                "operationId": "64fb1b04bffc98af60ea49ee407b679d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -918,14 +1147,34 @@
                                 "required": [
                                     "tracking_number",
                                     "weight",
-                                    "status"
+                                    "status",
+                                    "sender_id",
+                                    "receiver_id",
+                                    "item_name",
+                                    "origin_address",
+                                    "destination_address"
                                 ],
                                 "properties": {
                                     "tracking_number": {
                                         "type": "string"
                                     },
+                                    "sender_id": {
+                                        "type": "integer"
+                                    },
+                                    "receiver_id": {
+                                        "type": "integer"
+                                    },
+                                    "item_name": {
+                                        "type": "string"
+                                    },
                                     "weight": {
                                         "type": "number"
+                                    },
+                                    "origin_address": {
+                                        "type": "string"
+                                    },
+                                    "destination_address": {
+                                        "type": "string"
                                     },
                                     "status": {
                                         "type": "string",
@@ -960,16 +1209,21 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/paket/{id}": {
+        "/paket/{id}": {
             "put": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Memperbarui status sebuah paket",
-                "operationId": "0448bac1a8d5e9a3e897eb684375eb23",
+                "operationId": "507f9ee8ff8ff32ddc0a919ada63ae0a",
                 "parameters": [
                     {
                         "name": "id",
@@ -1037,14 +1291,19 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Menghapus data paket",
-                "operationId": "b1feb7c1a5e41b8bde5c44a3f5922777",
+                "operationId": "8cd434909a8a70214ed0d31b84b9522f",
                 "parameters": [
                     {
                         "name": "id",
@@ -1086,16 +1345,21 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/paket/{tracking_number}/track": {
+        "/paket/{tracking_number}/track": {
             "get": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Melacak paket berdasarkan nomor pelacakan",
-                "operationId": "b58f86e220605d301a61ad6a020962e2",
+                "operationId": "92f3da5e2112ad7c1f6b4794a96a4939",
                 "parameters": [
                     {
                         "name": "tracking_number",
@@ -1137,7 +1401,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/users": {
@@ -1412,6 +1681,12 @@
                 },
                 "type": "object"
             },
+            "ValidationErrors": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
             "KategoriBarang": {
                 "required": [
                     "nama_kategori"
@@ -1533,6 +1808,16 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Gunakan format: Bearer {token}",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
         }
     },
     "tags": [
@@ -1563,6 +1848,11 @@
         {
             "name": "Paket",
             "description": "Paket"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
         }
     ]
 }

@@ -169,6 +169,12 @@ return [
          * API security definitions. Will be generated into documentation file.
         */
         'securityDefinitions' => [
+            'bearerAuth' => [ // Nama bebas, sesuaikan nanti di anotasi
+                'type' => 'apiKey',
+                'description' => 'Masukkan token dengan format: Bearer {token}',
+                'name' => 'Authorization',
+                'in' => 'header',
+            ],
             'securitySchemes' => [
                 /*
                  * Examples of Security schemes
@@ -217,6 +223,7 @@ return [
                 */
             ],
             'security' => [
+                ['bearerAuth' => []],
                 /*
                  * Examples of Securities
                  */

@@ -13,7 +13,7 @@ class BarangController extends Controller
      * Display a listing of the resource.
      *
      * @OA\Get(
-     *     path="/api/barang",
+     *     path="/barang",
      *     summary="Get list of barang",
      *     tags={"Barang"},
      *     @OA\Response(response=200, description="Success")
@@ -28,7 +28,7 @@ class BarangController extends Controller
      * Store a newly created resource in storage.
      *
      * @OA\Post(
-     *     path="/api/barang",
+     *     path="/barang",
      *     summary="Create a new barang",
      *     tags={"Barang"},
      *     @OA\RequestBody(
@@ -40,31 +40,51 @@ class BarangController extends Controller
      *             @OA\Property(property="deskripsi", type="string"),
      *             @OA\Property(property="berat", type="number"),
      *             @OA\Property(property="dimensi", type="string"),
-     *             @OA\Property(property="status", type="string")
+     *             @OA\Property(property="status", type="string", enum={"pending", "active", "inactive"})
      *         )
      *     ),
-     *     @OA\Response(response=201, description="Created")
+     *     @OA\Response(response=201, description="Created"),
+     *     @OA\Response(response=422, description="Validation Error"),
+     *     @OA\Response(response=500, description="Server Error")
      * )
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'id_kategori' => 'required|exists:kategori_barang,id_kategori',
-            'nama_barang' => 'required|string',
-            'deskripsi' => 'nullable|string',
-            'berat' => 'required|numeric',
-            'dimensi' => 'required|string',
-            'status' => 'nullable|string',
-        ]);
-        $barang = Barang::create($validated);
-        return response()->json($barang, 201);
+        try {
+            $validated = $request->validate([
+                'id_kategori' => 'required|integer|exists:kategori_barang,id_kategori',
+                'nama_barang' => 'required|string|max:255',
+                'deskripsi' => 'nullable|string',
+                'berat' => 'required|numeric|min:0',
+                'dimensi' => 'required|string|max:50',
+                'status' => 'nullable|string|in:pending,active,inactive',
+            ]);
+
+            $barang = Barang::create($validated);
+
+            return response()->json([
+                'message' => 'Barang created successfully',
+                'data' => $barang
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create barang',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      *
      * @OA\Get(
-     *     path="/api/barang/{id}",
+     *     path="/barang/{id}",
      *     summary="Get a barang by ID",
      *     tags={"Barang"},
      *     @OA\Parameter(
@@ -90,7 +110,7 @@ class BarangController extends Controller
      * Update the specified resource in storage.
      *
      * @OA\Put(
-     *     path="/api/barang/{id}",
+     *     path="/barang/{id}",
      *     summary="Update a barang",
      *     tags={"Barang"},
      *     @OA\Parameter(
@@ -136,7 +156,7 @@ class BarangController extends Controller
      * Remove the specified resource from storage.
      *
      * @OA\Delete(
-     *     path="/api/barang/{id}",
+     *     path="/barang/{id}",
      *     summary="Delete a barang",
      *     tags={"Barang"},
      *     @OA\Parameter(
@@ -158,4 +178,4 @@ class BarangController extends Controller
         $barang->delete();
         return response()->json(null, 204);
     }
-} 
+}

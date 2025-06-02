@@ -32,7 +32,7 @@ class PackageController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/paket",
+     *     path="/paket",
      *     summary="Mengambil semua data paket",
      *     tags={"Paket"},
      *     @OA\Response(
@@ -52,15 +52,21 @@ class PackageController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/paket",
+     *     path="/paket",
+     *     security={{"bearerAuth":{}}},
      *     summary="Menambahkan data paket baru",
      *     tags={"Paket"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"tracking_number", "weight", "status"},
+     *             required={"tracking_number", "weight", "status", "sender_id", "receiver_id", "item_name", "origin_address", "destination_address"},
      *             @OA\Property(property="tracking_number", type="string"),
+     *             @OA\Property(property="sender_id", type="integer"),
+     *             @OA\Property(property="receiver_id", type="integer"),
+     *             @OA\Property(property="item_name", type="string"),
      *             @OA\Property(property="weight", type="number"),
+     *             @OA\Property(property="origin_address", type="string"),
+     *             @OA\Property(property="destination_address", type="string"),
      *             @OA\Property(property="status", type="string", enum={"pending", "in_transit", "delivered"})
      *         )
      *     ),
@@ -78,22 +84,36 @@ class PackageController extends Controller
     {
         $request->validate([
             'tracking_number' => 'required|unique:packages',
+            'sender_id' => 'required|exists:users,id',
+            'receiver_id' => 'required|exists:users,id',
+            'item_name' => 'required|string',
             'weight' => 'required|numeric',
+            'origin_address' => 'required|string',
+            'destination_address' => 'required|string',
             'status' => 'required|string|in:pending,in_transit,delivered',
         ]);
 
         $package = Package::create([
             'tracking_number' => $request->tracking_number,
+            'sender_id' => $request->sender_id,
+            'receiver_id' => $request->receiver_id,
+            'item_name' => $request->item_name,
             'weight' => $request->weight,
+            'origin_address' => $request->origin_address,
+            'destination_address' => $request->destination_address,
             'status' => $request->status,
         ]);
 
-        return response()->json(['message' => 'Paket berhasil dibuat', 'data' => $package], 201);
+        return response()->json([
+            'message' => 'Paket berhasil dibuat',
+            'data' => $package
+        ], 201);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/paket/{id}",
+     *     path="/paket/{id}",
+     * security={{"bearerAuth":{}}},
      *     summary="Memperbarui status sebuah paket",
      *     tags={"Paket"},
      *     @OA\Parameter(
@@ -149,7 +169,8 @@ class PackageController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/paket/{id}",
+     *     path="/paket/{id}",
+     * security={{"bearerAuth":{}}},
      *     summary="Menghapus data paket",
      *     tags={"Paket"},
      *     @OA\Parameter(
@@ -183,7 +204,8 @@ class PackageController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/paket/{tracking_number}/track",
+     *     path="/paket/{tracking_number}/track",
+     * security={{"bearerAuth":{}}},
      *     summary="Melacak paket berdasarkan nomor pelacakan",
      *     tags={"Paket"},
      *     @OA\Parameter(

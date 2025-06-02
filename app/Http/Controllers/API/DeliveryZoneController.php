@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DeliveryZone;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * @OA\Tag(
@@ -24,13 +25,16 @@ use App\Models\DeliveryZone;
  *     @OA\Property(property="description", type="string", description="Deskripsi Area Pengiriman"),
  *     @OA\Property(property="base_price", type="number", format="float", description="Harga Dasar Area Pengiriman")
  * )
+ * 
+ * 
  */
 
 class DeliveryZoneController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/area-pengiriman",
+     *     path="/area-pengiriman",
+     * security={{"bearerAuth":{}}},
      *     summary="Mengambil semua area pengiriman",
      *     tags={"AreaPengiriman"},
      *     @OA\Response(
@@ -49,7 +53,8 @@ class DeliveryZoneController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/area-pengiriman",
+     *     path="/area-pengiriman",
+     *     security={{"bearerAuth":{}}},
      *     summary="Menambahkan area pengiriman baru",
      *     tags={"AreaPengiriman"},
      *     @OA\RequestBody(
@@ -69,24 +74,52 @@ class DeliveryZoneController extends Controller
      *             @OA\Property(property="message", type="string"),
      *             @OA\Property(property="data", ref="#/components/schemas/AreaPengiriman")
      *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(
+     *                 property="errors",
+     *                 type="object",
+     *                 additionalProperties=@OA\Schema(
+     *                     schema="ValidationErrors",
+     *                     type="array",
+     *                     @OA\Items(type="string")
+     *                 )
+     *             )
+     *         )
      *     )
      * )
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:10|unique:area_pengiriman',
+            'code' => 'required|string|max:10|unique:delivery_zones', // Changed from area_pengiriman
             'description' => 'nullable|string',
             'base_price' => 'required|numeric|min:0',
         ]);
-        $deliveryZone = DeliveryZone::create($validated);
-        return response()->json($deliveryZone, 201);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $deliveryZone = DeliveryZone::create($validator->validated());
+        return response()->json([
+            'message' => 'Area pengiriman berhasil ditambahkan',
+            'data' => $deliveryZone
+        ], 201);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/area-pengiriman/{id}",
+     *     path="/area-pengiriman/{id}",
+     * security={{"bearerAuth":{}}},
      *     summary="Mengambil detail area pengiriman berdasarkan ID",
      *     tags={"AreaPengiriman"},
      *     @OA\Parameter(
@@ -122,7 +155,8 @@ class DeliveryZoneController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/area-pengiriman/{id}",
+     *     path="/area-pengiriman/{id}",
+     * security={{"bearerAuth":{}}},
      *     summary="Memperbarui informasi area pengiriman",
      *     tags={"AreaPengiriman"},
      *     @OA\Parameter(
@@ -175,7 +209,8 @@ class DeliveryZoneController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/area-pengiriman/{id}",
+     *     path="/area-pengiriman/{id}",
+     * security={{"bearerAuth":{}}},
      *     summary="Menghapus area pengiriman",
      *     tags={"AreaPengiriman"},
      *     @OA\Parameter(

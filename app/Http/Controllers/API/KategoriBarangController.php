@@ -32,7 +32,7 @@ class KategoriBarangController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/kategori-barang",
+     *     path="/kategori-barang",
      *     summary="Mengambil semua kategori barang",
      *     tags={"KategoriBarang"},
      *     @OA\Response(
@@ -52,7 +52,7 @@ class KategoriBarangController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/kategori-barang",
+     *     path="/kategori-barang",
      *     summary="Menambahkan kategori barang baru",
      *     tags={"KategoriBarang"},
      *     @OA\RequestBody(
@@ -98,7 +98,7 @@ class KategoriBarangController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/kategori-barang/{id}",
+     *     path="/kategori-barang/{id}",
      *     summary="Mengambil detail kategori barang berdasarkan ID",
      *     tags={"KategoriBarang"},
      *     @OA\Parameter(
@@ -131,7 +131,7 @@ class KategoriBarangController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/kategori-barang/{id}",
+     *     path="/kategori-barang/{id}",
      *     summary="Memperbarui kategori barang",
      *     tags={"KategoriBarang"},
      *     @OA\Parameter(
@@ -191,7 +191,7 @@ class KategoriBarangController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/kategori-barang/{id}",
+     *     path="/kategori-barang/{id}",
      *     summary="Menghapus kategori barang",
      *     tags={"KategoriBarang"},
      *     @OA\Parameter(

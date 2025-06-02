@@ -19,6 +19,15 @@ use Illuminate\Routing\Controller as BaseController;
  *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
  *     )
  * )
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     description="Gunakan format: Bearer {token}",
+ *     name="Authorization",
+ *     in="header",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     securityScheme="bearerAuth"
+ * )
  *
  * @OA\Server(
  *     url=L5_SWAGGER_CONST_HOST,
