@@ -876,13 +876,13 @@
                 }
             }
         },
-        "/api/packages": {
+        "/api/paket": {
             "get": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Mengambil semua data paket",
-                "operationId": "fa711def65ef2543611b07b2681b876d",
+                "operationId": "e48b732c8041da02479e124e11e13e31",
                 "responses": {
                     "200": {
                         "description": "Daftar paket berhasil diambil",
@@ -909,7 +909,7 @@
                     "Paket"
                 ],
                 "summary": "Menambahkan data paket baru",
-                "operationId": "05b37489e2a6cde1f8d3f6970185ff54",
+                "operationId": "bfc807940de08a8c76307da514d75f5d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -963,13 +963,13 @@
                 }
             }
         },
-        "/api/packages/{id}": {
+        "/api/paket/{id}": {
             "put": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Memperbarui status sebuah paket",
-                "operationId": "f1d050cff3d2ef404dccf96acb17c23c",
+                "operationId": "0448bac1a8d5e9a3e897eb684375eb23",
                 "parameters": [
                     {
                         "name": "id",
@@ -1044,7 +1044,7 @@
                     "Paket"
                 ],
                 "summary": "Menghapus data paket",
-                "operationId": "5d78fac156bf755d68fc3cf8e1c7cd28",
+                "operationId": "b1feb7c1a5e41b8bde5c44a3f5922777",
                 "parameters": [
                     {
                         "name": "id",
@@ -1089,13 +1089,13 @@
                 }
             }
         },
-        "/api/packages/{tracking_number}/track": {
+        "/api/paket/{tracking_number}/track": {
             "get": {
                 "tags": [
                     "Paket"
                 ],
                 "summary": "Melacak paket berdasarkan nomor pelacakan",
-                "operationId": "12cbf01417b48ffe32363e7b5b85df85",
+                "operationId": "b58f86e220605d301a61ad6a020962e2",
                 "parameters": [
                     {
                         "name": "tracking_number",

@@ -32,7 +32,7 @@ class PackageController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/packages",
+     *     path="/api/paket",
      *     summary="Mengambil semua data paket",
      *     tags={"Paket"},
      *     @OA\Response(
@@ -52,7 +52,7 @@ class PackageController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/packages",
+     *     path="/api/paket",
      *     summary="Menambahkan data paket baru",
      *     tags={"Paket"},
      *     @OA\RequestBody(
@@ -93,7 +93,7 @@ class PackageController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/packages/{id}",
+     *     path="/api/paket/{id}",
      *     summary="Memperbarui status sebuah paket",
      *     tags={"Paket"},
      *     @OA\Parameter(
@@ -149,7 +149,7 @@ class PackageController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/packages/{id}",
+     *     path="/api/paket/{id}",
      *     summary="Menghapus data paket",
      *     tags={"Paket"},
      *     @OA\Parameter(
@@ -183,7 +183,7 @@ class PackageController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/packages/{tracking_number}/track",
+     *     path="/api/paket/{tracking_number}/track",
      *     summary="Melacak paket berdasarkan nomor pelacakan",
      *     tags={"Paket"},
      *     @OA\Parameter(
